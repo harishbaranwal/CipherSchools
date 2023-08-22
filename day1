@@ -1,4 +1,4 @@
-#MAX OF AREA BETWEEN TWO WALLS 
+#MAX WATER BETWEEN TWO WALLS 
 
 #include <iostream>
 using namespace std;
