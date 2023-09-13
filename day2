@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+ListNode* oddEvenList(ListNode* head) {
+    if (!head || !head->next || !head->next->next) {
+        return head; 
+    }
+
+    ListNode* oddHead = head;
+    ListNode* evenHead = head->next;
+    ListNode* oddTail = oddHead;
+    ListNode* evenTail = evenHead;
+
+    while (evenTail && evenTail->next) {
+        oddTail->next = evenTail->next;
+        oddTail = oddTail->next;
+        evenTail->next = oddTail->next;
+        evenTail = evenTail->next;
+    }
+
+    oddTail->next = evenHead;
+    return oddHead;
+}
+
+string printList(ListNode* head) {
+    string result = "[";
+    while (head) {
+        result += to_string(head->val);
+        if (head->next) {
+            result += ",";
+        }
+        head = head->next;
+    }
+    result += "]";
+    return result;
+}
+
+int main() {
+    string inputStr;
+    cout<< "head = ";
+    cin >> inputStr;
+
+    istringstream iss(inputStr);
+    vector<int> input;
+    string token;
+    
+    while (getline(iss, token, ',')) {
+        input.push_back(stoi(token));
+    }
+
+    ListNode* head = nullptr;
+    ListNode* current = nullptr;
+
+    for (int val : input) {
+        if (!head) {
+            head = new ListNode(val);
+            current = head;
+        } else {
+            current->next = new ListNode(val);
+            current = current->next;
+        }
+    }
+
+    head = oddEvenList(head);
+    cout<< printList(head) << endl;
+
+    return 0;
+}
