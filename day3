@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+void insertNode(ListNode*& head, int data) {
+    ListNode* newNode=new ListNode(data);
+    
+    if (head==nullptr) {
+        head=newNode;
+        return;
+    }
+    ListNode* temp=head;
+    while (temp->next != nullptr) {
+        temp=temp->next;
+    }
+    temp->next=newNode;
+}
+ListNode* rotateRight(ListNode* head, int k) {
+    if (head==nullptr || head->next==nullptr || k==0)
+        return head;
+    int length=1;
+    ListNode* tail=head;
+    
+    while (tail->next != nullptr) {
+        tail=tail->next;
+        length++;
+    }
+    k=k%length;
+    if (k==0)
+        return head;
+
+    ListNode* newTail=head;
+
+    for (int i=0;i<length-k-1;i++) {
+        newTail=newTail->next;
+    }
+    ListNode* newHead=newTail->next;
+    newTail->next=nullptr;
+    tail->next=head;
+    return newHead;
+}
+
+void printList(ListNode* head) {
+    ListNode* temp=head;
+    
+    while (temp != nullptr) {
+        cout << temp->val << " ";
+        temp=temp->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    ListNode* head=nullptr;
+    int n, k, data;
+    cout << "Size = ";
+    cin >> n;
+    cout << "Nodes = ";
+    
+    for (int i=0; i < n; i++) {
+        cin >> data;
+        insertNode(head, data);
+    }
+    cout << "K = ";
+    cin >> k;
+
+    ListNode* rotatedHead=rotateRight(head, k);
+
+    cout << "Rotated Linked List = ";
+    printList(rotatedHead);
+    return 0;
+}
